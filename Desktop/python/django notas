@@ -1,0 +1,152 @@
+Instalar 
+pip install django
+--init--
+paquete de puthon
+
+asgi
+configurar archivo dedespliegue en el servidor
+
+settign
+configurar faracteristicvas del proyecto
+conexion a bd
+
+URL
+
+WSGI
+despliegue sobre servidor
+
+
+para inicar el proyecto
+django-admin startproject proyecto
+
+hay que meterse a la carpera del proyecto donde esta el archivo manage.py
+cd proyecto
+  ******************
+  Para ejecutar 
+  python manage.py runserver
+
+******************
+Registrar la aplicaciom
+settings.py INSTALLED_APPS 'webapp'
+
+
+
+
+
+
+PASO 1
+Ir a la carpeta mas externa la primera
+click derecho
+mark this directiry
+Sources Root
+django-admin startproject sap
+cd sap para estar en al raiz del manage.py
+python manage.py runserver
+
+*****
+GREGAR CONCEPTO DE APP
+ python manage.py startapp webapp
+
+PASO 2
+Registrar APP
+carpeta general sap
+settings
+INSTALLED INSTALLED_APPS
+'webapp',
+
+PASO 3
+AGREGAR MAPEO URL
+,path('bienvenido/',bienvenido())
+
+PASO 4
+views crear funcion para la ruta
+importar la funcion desde archivo URL
+def bienvenido(request):
+    return HttpResponse("Bienvenido")
+
+ VIEWS
+def bienvenido(request):
+    return HttpResponse("Bienvenido")
+
+
+ ULÑTIMO PASO EJECUTAR
+ python manage.py runserver
+
+ ***************************
+ Configurar DB
+ archivo settings
+
+INSTALAR CONECTOR A POSTGRES
+python -m pip install psycopg2
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sap_db,
+        'USER': 'postgres',
+        'PASSWORD': '2104',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
+APLICAR MIGRACIONES DE BD
+ python manage.py migrate
+revisar bd para ver tablas
+
+
+***************
+RECORDAR QUE SIEMRPE QUE SE REGISTREN MODELOS HAY QUE REGISTRARLOS EN ADMIN.PY
+Hay que crear nueva app para modelo de persona
+se crea una carpeta nueva llamada personas
+python manage.py startapp personas
+
+** VAMOS A REGISTRAR LA WEBAPP
+EN la carpeta sap, al ser la carpeta raiz vamos al archivo settings y registramos la app
+
+**para crear clases vamos a la app persoans y el archivo modelos.py
+
+from django.db import models
+
+** Con esto se crea una tabla con los campos especificados
+class Persona(models.Model):
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+
+**********************************CON ESTA LINEA SE CONVIERTE EN TABLA DE BD SQL
+OJO SIEMPRE QUE SE HAGAN CAMBIOS EN LA BD HAY QUE HACER ESTA MIGRACION
+python manage.py makemigrations
+python manage.py migrate
+
+****
+Pare revisar al sentencia s1l que se va a ejecutar
+ python manage.py sqlmigrate personas 0001 (nombre del archivo init)
+
+***PARA CREAR LA TABLA(ahsta este momento solo se ha analizado, no se ha creado en la bd)
+python manage.py migrate
+
+********************CONSOLA DE ADMINISTRACION DJANGO
+python manage.py createsuperuser
+
+**********+REGISTRAR NUESTROS MODEKLOS EN EL ENTORNO DE ADMIN
+RECORDAR QUE SIEMRPE QUE SE REGISTREN MODELOS HAY QUE REGISTRARLOS EN ADMIN.PY
+vamos a la carpeta de la app, en este caso personas
+admin.py
+admin.site.register(Persona)
+ASI YA SE PUEDEN AGREGAR OBJETOS DE TIPO PERSONA
+
+*****************
+PARA DEVOLVER HTML ES EN VIEWS
+def bienvenido(request):
+    n_personas = Persona.objects.count()
+    return render(request, 'bienvenido.html', {'numero de personas': n_personas})
+
+ #Usando MODELO PERSONAS; MEZCLANDO APPS
+    #Con objects nos conectamos a la bd
+    n_personas = Persona.objects.count()
+
+
+    MOPDELO MVT
+    EL MODELO ES PERSONA
+    URL, VIEW, TEMPLATES
